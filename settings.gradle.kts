@@ -1,27 +1,40 @@
-pluginManagement {
-  repositories {
-    google {
-      content {
-        includeGroupByRegex("com\\.android.*")
-        includeGroupByRegex("com\\.google.*")
-        includeGroupByRegex("androidx.*")
-      }
-    }
-    mavenCentral()
-    gradlePluginPortal()
-  }
-}
+rootProject.name = "HyperKit"
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-plugins { id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0" }
+pluginManagement {
+    repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
 
 dependencyResolutionManagement {
-  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-  repositories {
-    google()
-    mavenCentral()
-  }
+    repositories {
+        google {
+            mavenContent {
+                includeGroupAndSubgroups("androidx")
+                includeGroupAndSubgroups("com.android")
+                includeGroupAndSubgroups("com.google")
+            }
+        }
+        mavenCentral()
+    }
 }
 
-rootProject.name = "My Application"
-
+// HyperKit application (Frontend / Integration + API / Backend Shelves live in here).
 include(":app")
+
+// Whiteboard UPS = DrawBox. Included from source, unmodified, so the build is
+// reproducible offline from this repository. Project names are kept exactly as
+// upstream ("DrawBox", "drawbox-ui") because drawbox-ui depends on ":DrawBox".
+include(":DrawBox")
+project(":DrawBox").projectDir = file("ups/drawbox/DrawBox")
+include(":drawbox-ui")
+project(":drawbox-ui").projectDir = file("ups/drawbox/drawbox-ui")
